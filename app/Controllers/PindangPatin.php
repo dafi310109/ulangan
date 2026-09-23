@@ -15,45 +15,103 @@ class PindangPatin extends BaseController
     }
 
     /**
-     * Menampilkan daftar masakan Pindang Patin (Read)
+     * Menampilkan daftar masakan Pindang Patin (Read + Fitur Tambahan Pencarian & Filter)
      */
     public function index()
     {
-        $search   = $this->request->getGet('search');
+        $search   = trim((string)$this->request->getGet('search'));
         $kategori = $this->request->getGet('kategori');
         $pedas    = $this->request->getGet('pedas');
+        $status   = $this->request->getGet('status');
+        $sort     = $this->request->getGet('sort') ?: 'terbaru';
+        $viewType = $this->request->getGet('view') ?: 'grid';
 
         $builder = $this->pindangModel;
 
+        // Fitur Pencarian (Search)
         if (!empty($search)) {
             $builder = $builder->groupStart()
                 ->like('nama', $search)
                 ->orLike('deskripsi', $search)
                 ->orLike('bahan', $search)
                 ->orLike('asal_daerah', $search)
+                ->orLike('kategori', $search)
                 ->groupEnd();
         }
 
+        // Fitur Filter Kategori
         if (!empty($kategori) && $kategori !== 'Semua') {
             $builder = $builder->where('kategori', $kategori);
         }
 
+        // Fitur Filter Tingkat Pedas
         if (!empty($pedas) && $pedas !== 'Semua') {
             $builder = $builder->where('tingkat_pedas', $pedas);
         }
 
+        // Fitur Filter Status
+        if (!empty($status) && $status !== 'Semua') {
+            $builder = $builder->where('status', $status);
+        }
+
+        // Pengurutan (Sorting)
+        switch ($sort) {
+            case 'harga_asc':
+                $builder = $builder->orderBy('harga', 'ASC');
+                break;
+            case 'harga_desc':
+                $builder = $builder->orderBy('harga', 'DESC');
+                break;
+            case 'nama_asc':
+                $builder = $builder->orderBy('nama', 'ASC');
+                break;
+            case 'terbaru':
+            default:
+                $builder = $builder->orderBy('id', 'DESC');
+                break;
+        }
+
+        $makanan = $builder->findAll();
+
         $data = [
-            'title'        => 'Daftar Kuliner Pindang Patin Khas Sumatera Selatan',
-            'makanan'      => $builder->orderBy('id', 'DESC')->findAll(),
-            'total'        => $this->pindangModel->countAllResults(false),
-            'search'       => $search ?? '',
-            'selectedKat'  => $kategori ?? 'Semua',
-            'selectedPedas'=> $pedas ?? 'Semua',
-            'kategoriList' => ['Tradisional', 'Tempoyak', 'Kuah Bening', 'Kuah Pedas', 'Spesial'],
-            'pedasList'    => ['Sedang', 'Pedas', 'Sangat Pedas'],
+            'title'         => 'Katalog & Kuliner Pindang Patin Khas Sumatera Selatan',
+            'makanan'       => $makanan,
+            'total'         => $this->pindangModel->countAllResults(false),
+            'search'        => $search,
+            'selectedKat'   => $kategori ?? 'Semua',
+            'selectedPedas' => $pedas ?? 'Semua',
+            'selectedStatus'=> $status ?? 'Semua',
+            'selectedSort'  => $sort,
+            'viewType'      => $viewType,
+            'kategoriList'  => ['Tradisional', 'Tempoyak', 'Kuah Bening', 'Kuah Pedas', 'Spesial'],
+            'pedasList'     => ['Sedang', 'Pedas', 'Sangat Pedas'],
+            'statusList'    => ['Tersedia', 'Habis'],
         ];
 
         return view('pindang_patin/index', $data);
+    }
+
+    /**
+     * Halaman Detail Kuliner & Resep Pindang Patin
+     */
+    public function detail($id)
+    {
+        $item = $this->pindangModel->find($id);
+
+        if (!$item) {
+            throw new PageNotFoundException("Menu Pindang Patin dengan ID {$id} tidak ditemukan.");
+        }
+
+        // Ambil menu rekomendasi lainnya
+        $rekomendasi = $this->pindangModel->where('id !=', $id)->orderBy('id', 'RANDOM')->limit(3)->findAll();
+
+        $data = [
+            'title'       => $item['nama'] . ' - Detail & Resep Kuliner',
+            'item'        => $item,
+            'rekomendasi' => $rekomendasi,
+        ];
+
+        return view('pindang_patin/detail', $data);
     }
 
     /**
