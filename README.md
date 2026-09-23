@@ -1,69 +1,129 @@
-# CodeIgniter 4 Application Starter
+# 🐟 Aplikasi Katalog & Manajemen Kuliner: Pindang Patin (Sumatera Selatan)
 
-## What is CodeIgniter?
+Aplikasi web modern berbasis **CodeIgniter 4** dan **Tailwind CSS** untuk katalog, manajemen (CRUD), eksplorasi resep autentik, dan visualisasi hidangan khas **Pindang Patin** dari **Sumatera Selatan**.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+---
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## 📌 Identitas Peserta Ujian
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+| Data | Keterangan |
+| :--- | :--- |
+| **Nomor Urut** | `07` |
+| **Nama Siswa** | **Dafi Al Fajar** |
+| **Provinsi / Daerah** | **Sumatera Selatan** |
+| **Makanan Khas** | **Pindang Patin** |
+| **Warna Utama (Primer)** | `#9F1239` (Burgundy / Marun Khas Kain Songket) |
+| **Warna Aksen (Sekunder)** | `#D4AF37` (Metallic Gold / Emas Elegan Sriwijaya) |
+| **Fitur Khusus Ditugaskan** | **Pencarian (Search)** & **Filter (Kategori & Pedas)** |
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+---
 
-## Installation & updates
+## ✨ Fitur-Fitur Utama
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+### 1. CRUD Lengkap (Create, Read, Update, Delete)
+- **Create**: Formulir penambahan menu varian Pindang Patin dengan validasi data dan upload gambar.
+- **Read**: Menampilkan seluruh katalog menu baik dalam format Kartu Visual AI maupun Tabel Data Terstruktur.
+- **Update**: Pembaruan informasi resep, bumbu rempah, harga, takaran porsi, dan ketersediaan stok.
+- **Delete**: Penghapusan data dengan modal konfirmasi keamanan dan pembersihan otomatis file gambar fisik.
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 2. Halaman Detail & Resep Interaktif
+- **Hero Image Showcase**: Menampilkan foto kuliner AI beresolusi tinggi dengan badge kategori dan daerah.
+- **Checklist Bahan Interaktif**: Daftar bahan dan bumbu rempah yang dapat dicentang saat persiapan memasak.
+- **Petunjuk Memasak Step-by-Step**: Langkah memasak bernomor yang jelas dan terstruktur.
+- **Tips Tradisional**: Tips mengolah ikan patin agar bebas aroma lumpur dan tekstur daging tetap lembut kenyal.
+- **Fitur Cetak Resep**: Tombol cetak (`Print`) untuk menyimpan atau mencetak panduan resep.
+- **Rekomendasi Varian Lain**: Menampilkan 3 rekomendasi menu pindang patin lainnya di bagian bawah halaman.
 
-## Setup
+### 3. Fitur Pencarian (Search)
+- Kolom pencarian responsif yang mencari secara cerdas pada nama masakan, bahan-bahan rempah, asal daerah, kategori, maupun deskripsi rasa.
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+### 4. Fitur Filter & Pengurutan (Sorting)
+- **Filter Kategori**: Menyaring menu berdasarkan *Tradisional*, *Tempoyak*, *Kuah Bening*, *Kuah Pedas*, dan *Spesial*. Dilengkapi *Quick-Pills button*.
+- **Filter Tingkat Kepedasan**: *Sedang*, *Pedas*, dan *Sangat Pedas*.
+- **Filter Status Ketersediaan**: *Tersedia* dan *Habis*.
+- **Pengurutan (Sort)**: Berdasarkan *Terbaru*, *Harga Termurah*, *Harga Termahal*, dan *Nama (A-Z)*.
 
-## Important Change with index.php
+### 5. Mode Tampilan Ganda (Dual View)
+- **Mode Kartu Visual AI (Grid)**: Mengedepankan estetika fotografi sajian makanan dengan tombol aksi cepat.
+- **Mode Tabel Data (Table)**: Tata letak data tabular yang ringkas dan padat untuk manajemen data cepat.
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+### 6. Aset Gambar AI Generated
+- Dilengkapi foto kuliner AI beresolusi tinggi yang menggambarkan kelezatan autentik Pindang Patin berkuah asam-pedas nanas dan tempoyak khas Palembang.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+---
 
-**Please** read the user guide for a better explanation of how CI4 works!
+## 🗄️ Struktur Database (`pindang_patin`)
 
-## Repository Management
+| Kolom | Tipe Data | Keterangan |
+| :--- | :--- | :--- |
+| `id` | `INT(11)` | Primary Key, Auto Increment |
+| `nama` | `VARCHAR(255)` | Nama varian hidangan Pindang Patin |
+| `kategori` | `VARCHAR(100)` | Kategori masakan (Tradisional, Tempoyak, dll) |
+| `asal_daerah` | `VARCHAR(100)` | Asal daerah (default: Sumatera Selatan) |
+| `deskripsi` | `TEXT` | Deskripsi cita rasa & cerita kuliner |
+| `bahan` | `TEXT` | Rincian bahan dan bumbu halus |
+| `cara_membuat` | `TEXT` | Langkah-langkah pembuatan |
+| `tingkat_pedas` | `VARCHAR(50)` | Sedang / Pedas / Sangat Pedas |
+| `porsi` | `VARCHAR(50)` | Estimasi porsi saji (cth: 2-3 Porsi) |
+| `estimasi_waktu` | `VARCHAR(50)` | Waktu memasak (cth: 40 Menit) |
+| `harga` | `INT(11)` | Estimasi harga per porsi (Rupiah) |
+| `status` | `VARCHAR(50)` | Tersedia / Habis |
+| `gambar` | `VARCHAR(255)` | Nama file gambar sajian |
+| `created_at` | `DATETIME` | Waktu data dibuat |
+| `updated_at` | `DATETIME` | Waktu data diperbarui |
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+---
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+## 🚀 Panduan Instalasi & Penggunaan
 
-## Server Requirements
+### 1. Prasyarat Sistem
+- **PHP**: Versi 8.1 atau lebih baru (dengan ekstensi `intl`, `mbstring`, `mysqli`)
+- **Web Server**: Apache (XAMPP)
+- **Database**: MySQL / MariaDB (Port 3306)
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+### 2. Konfigurasi Database
+1. Buka XAMPP Control Panel dan pastikan layanan **Apache** dan **MySQL** aktif.
+2. Buat database baru bernama `ulangan` di phpMyAdmin (`http://localhost/phpmyadmin/`).
+3. Konfigurasi koneksi sudah diatur di file `.env` dan `app/Config/Database.php`:
+   ```env
+   database.default.hostname = localhost
+   database.default.database = ulangan
+   database.default.username = root
+   database.default.password = 
+   database.default.DBDriver = MySQLi
+   ```
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+### 3. Menjalankan Migration & Seeder
+Buka terminal PowerShell pada direktori proyek (`c:\xampp\htdocs\ulangan`), jalankan:
+```bash
+# Menjalankan migrasi pembuatan tabel
+php spark migrate
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+# Menjalankan seeder data autentik Pindang Patin
+php spark db:seed PindangPatinSeeder
+```
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+### 4. Mengakses Aplikasi Web
+Buka peramban (browser) dan akses:
+```
+http://localhost/ulangan/public/
+```
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+---
+
+## 📋 Riwayat Tahapan Commit Proyek
+
+Sesuai ketentuan ujian pengerjaan 4 tahap:
+
+1. **Tahap A**: `"Setup database & migration Pindang Patin"`
+   - Konfigurasi database `.env`, pembuatan migration tabel `pindang_patin`, model `PindangPatinModel`, dan seeder `PindangPatinSeeder`.
+2. **Tahap B**: `"CRUD dasar + tampilan Tailwind Pindang Patin"`
+   - Implementasi controller `PindangPatin`, perutean routes, form tambah & edit, tabel CRUD, dan styling Tailwind CSS dengan palet `#9F1239` & `#D4AF37`.
+3. **Tahap C**: `"Halaman detail + fitur tambahan + gambar AI Pindang Patin"`
+   - Halaman detail resep lengkap, fitur pencarian, filter kategori & tingkat pedas, mode tampilan ganda, dan aset visual kuliner AI Generated.
+4. **Tahap D**: `"Finalisasi Pindang Patin"`
+   - Penyempurnaan dokumentasi, verifikasi akhir seluruh fitur, dan sinkronisasi ke repositori GitHub.
+
+---
+
+© 2026 **Dafi Al Fajar** (Absen 07) — Ujian Pemrograman Web CI4 & Tailwind CSS.
